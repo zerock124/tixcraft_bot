@@ -1,8 +1,8 @@
 {
-    "homepage": "about:blank",
+    "homepage": "https://tixcraft.com/activity/detail/25_dojacat_v",
     "browser": "chrome",
     "language": "\u7e41\u9ad4\u4e2d\u6587",
-    "ticket_number": 2,
+    "ticket_number": 1,
     "refresh_datetime": "",
     "ocr_captcha": {
         "enable": true,
@@ -79,9 +79,9 @@
         "headless": false,
         "verbose": false,
         "auto_guess_options": true,
-        "user_guess_string": "",
+        "user_guess_string": "\"YES\"",
         "remote_url": "\"http://127.0.0.1:16888/\"",
-        "auto_reload_page_interval": 0.1,
+        "auto_reload_page_interval": 3.0,
         "auto_reload_overheat_count": 4,
         "auto_reload_overheat_cd": 1.0,
         "reset_browser_interval": 0,

@@ -2021,11 +2021,18 @@ def launch_maxbot(script_name="chrome_tixcraft", filename="", homepage="", kktix
             cmd = script_name + '.exe ' + ' '.join(cmd_argument)
         subprocess.Popen(cmd, shell=True, cwd=working_dir)
     else:
-        interpreter_binary = 'python'
-        interpreter_binary_alt = 'python3'
-        if platform.system() != 'Windows':
-            interpreter_binary = 'python3'
+        # Check if we're running in a virtual environment
+        venv_python = os.path.join(working_dir, '.venv', 'Scripts', 'python.exe')
+        if os.path.exists(venv_python):
+            interpreter_binary = venv_python
             interpreter_binary_alt = 'python'
+            print("Using virtual environment python:", venv_python)
+        else:
+            interpreter_binary = 'python'
+            interpreter_binary_alt = 'python3'
+            if platform.system() != 'Windows':
+                interpreter_binary = 'python3'
+                interpreter_binary_alt = 'python'
         print("execute in shell mode.")
 
         try:

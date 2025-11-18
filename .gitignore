@@ -1,0 +1,33 @@
+# Python 編譯文件
+__pycache__/
+*.py[cod]
+*$py.class
+# 虛擬環境
+env/
+venv/
+# 打包文件
+build/
+dist/
+*.egg-info/
+# 日誌文件
+*.log
+# Jupyter Notebook 檢查點
+ipynb_checkpoints/
+# IDE 配置文件
+vscode/
+idea/
+# 單元測試和覆蓋率報告
+tox/
+nox/
+coverage
+pytest_cache/
+# Django 數據庫文件
+db.sqlite3
+db.sqlite3-journal
+# Flask 實例目錄
+instance/
+# Sphinx 文檔生成目錄
+docs/_build/
+#虛擬資料夾
+.venv/
+.vscode/

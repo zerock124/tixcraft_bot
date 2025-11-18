@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#encoding=utf-8
+# encoding=utf-8
 import asyncio
 import base64
 import json
@@ -68,25 +68,9 @@ CONST_WEBDRIVER_TYPE_UC = "undetected_chromedriver"
 CONST_WEBDRIVER_TYPE_DP = "DrissionPage"
 CONST_WEBDRIVER_TYPE_NODRIVER = "nodriver"
 
-CONST_SUPPORTED_SITES = ["https://kktix.com"
-    ,"https://tixcraft.com (拓元)"
-    ,"https://ticketmaster.sg"
-    #,"https://ticketmaster.com"
-    ,"https://teamear.tixcraft.com/ (添翼)"
-    ,"https://www.indievox.com/ (獨立音樂)"
-    ,"https://www.famiticket.com.tw (全網)"
-    ,"https://ticket.ibon.com.tw/"
-    ,"https://kham.com.tw/ (寬宏)"
-    ,"https://ticket.com.tw/ (年代)"
-    ,"https://tickets.udnfunlife.com/ (udn售票網)"
-    ,"https://ticketplus.com.tw/ (遠大)"
-    ,"===[香港或南半球的系統]==="
-    ,"http://www.urbtix.hk/ (城市)"
-    ,"https://www.cityline.com/ (買飛)"
-    ,"https://hotshow.hkticketing.com/ (快達票)"
-    ,"https://ticketing.galaxymacau.com/ (澳門銀河)"
-    ,"http://premier.ticketek.com.au"
-    ]
+CONST_SUPPORTED_SITES = ["https://kktix.com", "https://tixcraft.com (拓元)", "https://ticketmaster.sg"                         # ,"https://ticketmaster.com"
+                         , "https://teamear.tixcraft.com/ (添翼)", "https://www.indievox.com/ (獨立音樂)", "https://www.famiticket.com.tw (全網)", "https://ticket.ibon.com.tw/", "https://kham.com.tw/ (寬宏)", "https://ticket.com.tw/ (年代)", "https://tickets.udnfunlife.com/ (udn售票網)", "https://ticketplus.com.tw/ (遠大)", "===[香港或南半球的系統]===", "http://www.urbtix.hk/ (城市)", "https://www.cityline.com/ (買飛)", "https://hotshow.hkticketing.com/ (快達票)", "https://ticketing.galaxymacau.com/ (澳門銀河)", "http://premier.ticketek.com.au"
+                         ]
 
 URL_DONATE = 'https://max-everyday.com/about/#donate'
 URL_HELP = 'https://max-everyday.com/2018/03/tixcraft-bot/'
@@ -98,7 +82,7 @@ URL_EDGE_DRIVER = 'https://developer.microsoft.com/zh-tw/microsoft-edge/tools/we
 
 
 def get_default_config():
-    config_dict={}
+    config_dict = {}
 
     config_dict["homepage"] = CONST_HOMEPAGE_DEFAULT
     config_dict["browser"] = "chrome"
@@ -124,21 +108,21 @@ def get_default_config():
     config_dict["area_auto_select"]["area_keyword"] = ""
     config_dict["keyword_exclude"] = CONST_EXCLUDE_DEFAULT
 
-    config_dict['kktix']={}
+    config_dict['kktix'] = {}
     config_dict["kktix"]["auto_press_next_step_button"] = True
     config_dict["kktix"]["auto_fill_ticket_number"] = True
     config_dict["kktix"]["max_dwell_time"] = 60
 
-    config_dict['cityline']={}
+    config_dict['cityline'] = {}
     config_dict["cityline"]["cityline_queue_retry"] = True
 
-    config_dict['tixcraft']={}
+    config_dict['tixcraft'] = {}
     config_dict["tixcraft"]["pass_date_is_sold_out"] = True
     config_dict["tixcraft"]["auto_reload_coming_soon_page"] = True
 
-    config_dict['advanced']={}
+    config_dict['advanced'] = {}
 
-    config_dict['advanced']['play_sound']={}
+    config_dict['advanced']['play_sound'] = {}
     config_dict["advanced"]["play_sound"]["ticket"] = True
     config_dict["advanced"]["play_sound"]["order"] = True
     config_dict["advanced"]["play_sound"]["filename"] = CONST_CAPTCHA_SOUND_FILENAME_DEFAULT
@@ -187,9 +171,10 @@ def get_default_config():
     config_dict["advanced"]["verbose"] = False
     config_dict["advanced"]["auto_guess_options"] = True
     config_dict["advanced"]["user_guess_string"] = ""
-    
+
     # remote_url not under ocr, due to not only support ocr features.
-    config_dict["advanced"]["remote_url"] = "\"http://127.0.0.1:%d/\"" % (CONST_SERVER_PORT)
+    config_dict["advanced"]["remote_url"] = "\"http://127.0.0.1:%d/\"" % (
+        CONST_SERVER_PORT)
 
     config_dict["advanced"]["auto_reload_page_interval"] = 0.1
     config_dict["advanced"]["auto_reload_overheat_count"] = 4
@@ -205,6 +190,7 @@ def get_default_config():
 
     return config_dict
 
+
 def read_last_url_from_file():
     text = ""
     if os.path.exists(CONST_MAXBOT_LAST_URL_FILE):
@@ -214,6 +200,7 @@ def read_last_url_from_file():
         except Exception as e:
             pass
     return text
+
 
 def load_json():
     app_root = util.get_app_root()
@@ -232,6 +219,7 @@ def load_json():
         config_dict = get_default_config()
     return config_filepath, config_dict
 
+
 def reset_json():
     app_root = util.get_app_root()
     config_filepath = os.path.join(app_root, CONST_MAXBOT_CONFIG_FILE)
@@ -245,31 +233,54 @@ def reset_json():
     config_dict = get_default_config()
     return config_filepath, config_dict
 
+
 def decrypt_password(config_dict):
-    config_dict["advanced"]["facebook_password"] = util.decryptMe(config_dict["advanced"]["facebook_password"])
-    config_dict["advanced"]["kktix_password"] = util.decryptMe(config_dict["advanced"]["kktix_password"])
-    config_dict["advanced"]["fami_password"] = util.decryptMe(config_dict["advanced"]["fami_password"])
-    config_dict["advanced"]["cityline_password"] = util.decryptMe(config_dict["advanced"]["cityline_password"])
-    config_dict["advanced"]["urbtix_password"] = util.decryptMe(config_dict["advanced"]["urbtix_password"])
-    config_dict["advanced"]["hkticketing_password"] = util.decryptMe(config_dict["advanced"]["hkticketing_password"])
-    config_dict["advanced"]["kham_password"] = util.decryptMe(config_dict["advanced"]["kham_password"])
-    config_dict["advanced"]["ticket_password"] = util.decryptMe(config_dict["advanced"]["ticket_password"])
-    config_dict["advanced"]["udn_password"] = util.decryptMe(config_dict["advanced"]["udn_password"])
-    config_dict["advanced"]["ticketplus_password"] = util.decryptMe(config_dict["advanced"]["ticketplus_password"])
+    config_dict["advanced"]["facebook_password"] = util.decryptMe(
+        config_dict["advanced"]["facebook_password"])
+    config_dict["advanced"]["kktix_password"] = util.decryptMe(
+        config_dict["advanced"]["kktix_password"])
+    config_dict["advanced"]["fami_password"] = util.decryptMe(
+        config_dict["advanced"]["fami_password"])
+    config_dict["advanced"]["cityline_password"] = util.decryptMe(
+        config_dict["advanced"]["cityline_password"])
+    config_dict["advanced"]["urbtix_password"] = util.decryptMe(
+        config_dict["advanced"]["urbtix_password"])
+    config_dict["advanced"]["hkticketing_password"] = util.decryptMe(
+        config_dict["advanced"]["hkticketing_password"])
+    config_dict["advanced"]["kham_password"] = util.decryptMe(
+        config_dict["advanced"]["kham_password"])
+    config_dict["advanced"]["ticket_password"] = util.decryptMe(
+        config_dict["advanced"]["ticket_password"])
+    config_dict["advanced"]["udn_password"] = util.decryptMe(
+        config_dict["advanced"]["udn_password"])
+    config_dict["advanced"]["ticketplus_password"] = util.decryptMe(
+        config_dict["advanced"]["ticketplus_password"])
     return config_dict
 
+
 def encrypt_password(config_dict):
-    config_dict["advanced"]["facebook_password"] = util.encryptMe(config_dict["advanced"]["facebook_password"])
-    config_dict["advanced"]["kktix_password"] = util.encryptMe(config_dict["advanced"]["kktix_password"])
-    config_dict["advanced"]["fami_password"] = util.encryptMe(config_dict["advanced"]["fami_password"])
-    config_dict["advanced"]["cityline_password"] = util.encryptMe(config_dict["advanced"]["cityline_password"])
-    config_dict["advanced"]["urbtix_password"] = util.encryptMe(config_dict["advanced"]["urbtix_password"])
-    config_dict["advanced"]["hkticketing_password"] = util.encryptMe(config_dict["advanced"]["hkticketing_password"])
-    config_dict["advanced"]["kham_password"] = util.encryptMe(config_dict["advanced"]["kham_password"])
-    config_dict["advanced"]["ticket_password"] = util.encryptMe(config_dict["advanced"]["ticket_password"])
-    config_dict["advanced"]["udn_password"] = util.encryptMe(config_dict["advanced"]["udn_password"])
-    config_dict["advanced"]["ticketplus_password"] = util.encryptMe(config_dict["advanced"]["ticketplus_password"])
+    config_dict["advanced"]["facebook_password"] = util.encryptMe(
+        config_dict["advanced"]["facebook_password"])
+    config_dict["advanced"]["kktix_password"] = util.encryptMe(
+        config_dict["advanced"]["kktix_password"])
+    config_dict["advanced"]["fami_password"] = util.encryptMe(
+        config_dict["advanced"]["fami_password"])
+    config_dict["advanced"]["cityline_password"] = util.encryptMe(
+        config_dict["advanced"]["cityline_password"])
+    config_dict["advanced"]["urbtix_password"] = util.encryptMe(
+        config_dict["advanced"]["urbtix_password"])
+    config_dict["advanced"]["hkticketing_password"] = util.encryptMe(
+        config_dict["advanced"]["hkticketing_password"])
+    config_dict["advanced"]["kham_password"] = util.encryptMe(
+        config_dict["advanced"]["kham_password"])
+    config_dict["advanced"]["ticket_password"] = util.encryptMe(
+        config_dict["advanced"]["ticket_password"])
+    config_dict["advanced"]["udn_password"] = util.encryptMe(
+        config_dict["advanced"]["udn_password"])
+    config_dict["advanced"]["ticketplus_password"] = util.encryptMe(
+        config_dict["advanced"]["ticketplus_password"])
     return config_dict
+
 
 def maxbot_idle():
     app_root = util.get_app_root()
@@ -280,11 +291,13 @@ def maxbot_idle():
     except Exception as e:
         pass
 
+
 def maxbot_resume():
     app_root = util.get_app_root()
     idle_filepath = os.path.join(app_root, CONST_MAXBOT_INT28_FILE)
     for i in range(3):
-         util.force_remove_file(idle_filepath)
+        util.force_remove_file(idle_filepath)
+
 
 def launch_maxbot():
     global launch_counter
@@ -295,7 +308,7 @@ def launch_maxbot():
 
     config_filepath, config_dict = load_json()
     config_dict = decrypt_password(config_dict)
-    
+
     script_name = "chrome_tixcraft"
     if config_dict["webdriver_type"] == CONST_WEBDRIVER_TYPE_NODRIVER:
         script_name = "nodriver_tixcraft"
@@ -306,44 +319,51 @@ def launch_maxbot():
             size_array = window_size.split(",")
             target_width = int(size_array[0])
             target_left = target_width * launch_counter
-            #print("target_left:", target_left)
+            # print("target_left:", target_left)
             if target_left >= 1440:
                 launch_counter = 0
             window_size = window_size + "," + str(launch_counter)
-            #print("window_size:", window_size)
+            # print("window_size:", window_size)
 
-    threading.Thread(target=util.launch_maxbot, args=(script_name,"","","","",window_size,)).start()
+    threading.Thread(target=util.launch_maxbot, args=(
+        script_name, "", "", "", "", window_size,)).start()
+
 
 def change_maxbot_status_by_keyword():
     config_filepath, config_dict = load_json()
 
     system_clock_data = datetime.now()
     current_time = system_clock_data.strftime('%H:%M:%S')
-    #print('Current Time is:', current_time)
-    #print("idle_keyword", config_dict["advanced"]["idle_keyword"])
+    # print('Current Time is:', current_time)
+    # print("idle_keyword", config_dict["advanced"]["idle_keyword"])
     if len(config_dict["advanced"]["idle_keyword"]) > 0:
-        is_matched =  util.is_text_match_keyword(config_dict["advanced"]["idle_keyword"], current_time)
+        is_matched = util.is_text_match_keyword(
+            config_dict["advanced"]["idle_keyword"], current_time)
         if is_matched:
-            #print("match to idle:", current_time)
+            # print("match to idle:", current_time)
             maxbot_idle()
-    #print("resume_keyword", config_dict["advanced"]["resume_keyword"])
+    # print("resume_keyword", config_dict["advanced"]["resume_keyword"])
     if len(config_dict["advanced"]["resume_keyword"]) > 0:
-        is_matched =  util.is_text_match_keyword(config_dict["advanced"]["resume_keyword"], current_time)
+        is_matched = util.is_text_match_keyword(
+            config_dict["advanced"]["resume_keyword"], current_time)
         if is_matched:
-            #print("match to resume:", current_time)
+            # print("match to resume:", current_time)
             maxbot_resume()
-    
+
     current_time = system_clock_data.strftime('%S')
     if len(config_dict["advanced"]["idle_keyword_second"]) > 0:
-        is_matched =  util.is_text_match_keyword(config_dict["advanced"]["idle_keyword_second"], current_time)
+        is_matched = util.is_text_match_keyword(
+            config_dict["advanced"]["idle_keyword_second"], current_time)
         if is_matched:
-            #print("match to idle:", current_time)
+            # print("match to idle:", current_time)
             maxbot_idle()
     if len(config_dict["advanced"]["resume_keyword_second"]) > 0:
-        is_matched =  util.is_text_match_keyword(config_dict["advanced"]["resume_keyword_second"], current_time)
+        is_matched = util.is_text_match_keyword(
+            config_dict["advanced"]["resume_keyword_second"], current_time)
         if is_matched:
-            #print("match to resume:", current_time)
+            # print("match to resume:", current_time)
             maxbot_resume()
+
 
 def clean_extension_status():
     Root_Dir = util.get_app_root()
@@ -358,46 +378,50 @@ def clean_extension_status():
             print(exc)
             pass
 
+
 def sync_status_to_extension(status):
     Root_Dir = util.get_app_root()
     webdriver_path = os.path.join(Root_Dir, "webdriver")
     target_path = os.path.join(webdriver_path, CONST_MAXBOT_EXTENSION_NAME)
     target_path = os.path.join(target_path, "data")
     if os.path.exists(target_path):
-        target_path = os.path.join(target_path, CONST_MAXBOT_EXTENSION_STATUS_JSON)
-        #print("save as to:", target_path)
-        status_json={}
-        status_json["status"]=status
-        #print("dump json to path:", target_path)
+        target_path = os.path.join(
+            target_path, CONST_MAXBOT_EXTENSION_STATUS_JSON)
+        # print("save as to:", target_path)
+        status_json = {}
+        status_json["status"] = status
+        # print("dump json to path:", target_path)
         try:
             with open(target_path, 'w') as outfile:
                 json.dump(status_json, outfile)
         except Exception as e:
             pass
 
+
 def clean_tmp_file():
-    remove_file_list = [CONST_MAXBOT_LAST_URL_FILE
-        ,CONST_MAXBOT_INT28_FILE
-        ,CONST_MAXBOT_ANSWER_ONLINE_FILE
-        ,CONST_MAXBOT_QUESTION_FILE
-    ]
+    remove_file_list = [CONST_MAXBOT_LAST_URL_FILE, CONST_MAXBOT_INT28_FILE, CONST_MAXBOT_ANSWER_ONLINE_FILE, CONST_MAXBOT_QUESTION_FILE
+                        ]
     for filepath in remove_file_list:
-         util.force_remove_file(filepath)
+        util.force_remove_file(filepath)
+
 
 class QuestionHandler(tornado.web.RequestHandler):
     def get(self):
         global txt_question
         txt_question.insert("1.0", "")
 
+
 class VersionHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write({"version":self.application.version})
+        self.write({"version": self.application.version})
+
 
 class ShutdownHandler(tornado.web.RequestHandler):
     def get(self):
         global GLOBAL_SERVER_SHUTDOWN
         GLOBAL_SERVER_SHUTDOWN = True
         self.write({"showdown": GLOBAL_SERVER_SHUTDOWN})
+
 
 class StatusHandler(tornado.web.RequestHandler):
     def get(self):
@@ -407,15 +431,18 @@ class StatusHandler(tornado.web.RequestHandler):
         url = read_last_url_from_file()
         self.write({"status": not is_paused, "last_url": url})
 
+
 class PauseHandler(tornado.web.RequestHandler):
     def get(self):
         maxbot_idle()
         self.write({"pause": True})
 
+
 class ResumeHandler(tornado.web.RequestHandler):
     def get(self):
         maxbot_resume()
         self.write({"resume": True})
+
 
 class RunHandler(tornado.web.RequestHandler):
     def get(self):
@@ -423,17 +450,20 @@ class RunHandler(tornado.web.RequestHandler):
         launch_maxbot()
         self.write({"run": True})
 
+
 class LoadJsonHandler(tornado.web.RequestHandler):
     def get(self):
         config_filepath, config_dict = load_json()
         config_dict = decrypt_password(config_dict)
         self.write(config_dict)
 
+
 class ResetJsonHandler(tornado.web.RequestHandler):
     def get(self):
         config_filepath, config_dict = reset_json()
         util.save_json(config_dict, config_filepath)
         self.write(config_dict)
+
 
 class SaveJsonHandler(tornado.web.RequestHandler):
     def post(self):
@@ -444,7 +474,7 @@ class SaveJsonHandler(tornado.web.RequestHandler):
 
         if is_pass_check:
             is_pass_check = False
-            try :
+            try:
                 _body = json.loads(self.request.body)
                 is_pass_check = True
             except Exception:
@@ -475,9 +505,10 @@ class SaveJsonHandler(tornado.web.RequestHandler):
 
         if not is_pass_check:
             self.set_status(401)
-            self.write(dict(error=dict(message=error_message,code=error_code)))
+            self.write(dict(error=dict(message=error_message, code=error_code)))
 
         self.finish()
+
 
 class OcrHandler(tornado.web.RequestHandler):
     def get(self):
@@ -495,7 +526,7 @@ class OcrHandler(tornado.web.RequestHandler):
 
         if is_pass_check:
             is_pass_check = False
-            try :
+            try:
                 _body = json.loads(self.request.body)
                 is_pass_check = True
             except Exception:
@@ -514,9 +545,9 @@ class OcrHandler(tornado.web.RequestHandler):
                 errorMessage = "image_data not exist"
                 errorCode = 1002
 
-        #print("is_pass_check:", is_pass_check)
-        #print("errorMessage:", errorMessage)
-        #print("errorCode:", errorCode)
+        # print("is_pass_check:", is_pass_check)
+        # print("errorMessage:", errorMessage)
+        # print("errorCode:", errorCode)
         ocr_answer = ""
         if not img_base64 is None:
             try:
@@ -526,6 +557,7 @@ class OcrHandler(tornado.web.RequestHandler):
                 pass
 
         self.write({"answer": ocr_answer})
+
 
 class QueryHandler(tornado.web.RequestHandler):
     def format_config_keyword_for_json(self, user_input):
@@ -546,8 +578,9 @@ class QueryHandler(tornado.web.RequestHandler):
         except Exception as exc:
             pass
         answer_text_output = self.compose_as_json(answer_text)
-        #print("answer_text_output:", answer_text_output)
+        # print("answer_text_output:", answer_text_output)
         self.write(answer_text_output)
+
 
 async def main_server():
     ocr = None
@@ -566,7 +599,7 @@ async def main_server():
         ("/pause", PauseHandler),
         ("/resume", ResumeHandler),
         ("/run", RunHandler),
-        
+
         # json api
         ("/load", LoadJsonHandler),
         ("/save", SaveJsonHandler),
@@ -577,24 +610,26 @@ async def main_server():
         ("/question", QuestionHandler),
         ('/(.*)', StaticFileHandler, {"path": os.path.join(".", 'www/')}),
     ])
-    app.ocr = ocr;
-    app.version = CONST_APP_VERSION;
+    app.ocr = ocr
+    app.version = CONST_APP_VERSION
 
     app.listen(CONST_SERVER_PORT)
     print("server running on port:", CONST_SERVER_PORT)
 
-    url="http://127.0.0.1:" + str(CONST_SERVER_PORT) + "/settings.html"
+    url = "http://127.0.0.1:" + str(CONST_SERVER_PORT) + "/settings.html"
     print("goto url:", url)
     webbrowser.open_new(url)
     await asyncio.Event().wait()
 
+
 def web_server():
     is_port_binded = util.is_connectable(CONST_SERVER_PORT)
-    #print("is_port_binded:", is_port_binded)
+    # print("is_port_binded:", is_port_binded)
     if not is_port_binded:
         asyncio.run(main_server())
     else:
         print("port:", CONST_SERVER_PORT, " is in used.")
+
 
 def settgins_gui_timer():
     while True:
@@ -603,13 +638,14 @@ def settgins_gui_timer():
         if GLOBAL_SERVER_SHUTDOWN:
             break
 
+
 if __name__ == "__main__":
     global GLOBAL_SERVER_SHUTDOWN
     GLOBAL_SERVER_SHUTDOWN = False
-    
+
     threading.Thread(target=settgins_gui_timer, daemon=True).start()
     threading.Thread(target=web_server, daemon=True).start()
-    
+
     clean_tmp_file()
     clean_extension_status()
 
